@@ -1,5 +1,5 @@
-import type { BriefResponse, BriefArticle, CuratedArticle, Article } from '~/types/brief'
-import { SOURCE_INITIALS } from '~/types/brief'
+import type { BriefResponse, BriefArticle, CuratedArticle, Article } from '../../../types/brief'
+import { SOURCE_INITIALS } from '../../../types/brief'
 
 export default defineEventHandler(async (event): Promise<BriefResponse> => {
   const query = getQuery(event)
