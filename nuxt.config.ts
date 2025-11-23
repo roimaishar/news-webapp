@@ -39,5 +39,11 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false // Can enable for stricter checking
+  },
+
+  nitro: {
+    externals: {
+      inline: ['@supabase/supabase-js']
+    }
   }
 })
