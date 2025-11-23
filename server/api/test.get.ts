@@ -54,10 +54,13 @@ export default defineEventHandler(async (event) => {
       }
     }
   } catch (error: any) {
+    console.error('Test endpoint error:', error)
     return {
       status: 'error',
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
+      errorType: error.constructor?.name,
+      errorString: error.toString()
     }
   }
 })

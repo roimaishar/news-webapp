@@ -6,6 +6,15 @@ export default defineEventHandler(async (event): Promise<BriefResponse> => {
   const language = (query.language as string) || 'he'
 
   try {
+    // Check environment variables first
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables')
+      throw createError({
+        statusCode: 500,
+        message: 'Server configuration error: Missing database credentials'
+      })
+    }
+
     const supabase = useSupabaseServer()
 
     // Fetch the most recent curated articles for the specified language
@@ -126,11 +135,18 @@ export default defineEventHandler(async (event): Promise<BriefResponse> => {
     })
 
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching latest brief:', error)
+    console.error('Error stack:', error.stack)
+    console.error('Error details:', JSON.stringify(error, null, 2))
+
     throw createError({
-      statusCode: 500,
-      message: 'Failed to fetch latest news brief'
+      statusCode: error.statusCode || 500,
+      message: error.message || 'Failed to fetch latest news brief',
+      data: {
+        errorType: error.constructor?.name,
+        errorDetails: error.toString()
+      }
     })
   }
 })
