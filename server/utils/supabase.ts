@@ -1,16 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Server-side Supabase client using public URL and anon key
-// (For production, you'd use service role key for server-side operations)
 export const useSupabaseServer = () => {
-  const config = useRuntimeConfig()
+  const supabaseUrl = process.env.SUPABASE_URL || ''
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || ''
 
-  if (!config.public.supabaseUrl || !config.public.supabaseAnonKey) {
-    throw new Error('Supabase URL and Anon Key must be provided')
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase URL and Anon Key must be provided in environment variables')
   }
 
-  return createClient(
-    config.public.supabaseUrl,
-    config.public.supabaseAnonKey
-  )
+  return createClient(supabaseUrl, supabaseAnonKey)
 }

@@ -8,10 +8,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt'
   ],
 
-  nitro: {
-    preset: process.env.NETLIFY ? 'netlify' : 'vercel'
-  },
-
   app: {
     head: {
       title: 'Daily News Brief',
