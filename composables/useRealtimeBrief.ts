@@ -1,10 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Language } from '~/types/brief'
+
+type Language = 'he' | 'ar' | 'en'
 
 export const useRealtimeBrief = (language: Ref<Language>, onUpdate: () => void) => {
   const config = useRuntimeConfig()
   const isListening = ref(false)
   const lastUpdateTime = ref<string | null>(null)
+
+  // Check if Supabase credentials are available
+  if (!config.public.supabaseUrl || !config.public.supabaseAnonKey) {
+    console.warn('Supabase credentials not available for real-time updates')
+    return {
+      isListening,
+      lastUpdateTime,
+      startListening: () => {},
+      stopListening: () => {}
+    }
+  }
 
   // Create Supabase client for real-time subscriptions
   const supabase = createClient(

@@ -1,5 +1,30 @@
 <script setup lang="ts">
-import type { BriefResponse, Language } from '~/types/brief'
+// Define types inline to avoid import issues
+type Language = 'he' | 'ar' | 'en'
+
+interface BriefArticle {
+  id: number
+  title: string
+  source: string
+  sourceInitials: string
+  url: string
+  rankPosition: number
+  articleCount: number
+}
+
+interface BriefMetadata {
+  totalArticles: number
+  israelRelevantCount: number
+  otherCoverageCount: number
+  generatedAt: string
+  language: string
+}
+
+interface BriefResponse {
+  israelRelevant: BriefArticle[]
+  otherCoverage: BriefArticle[]
+  metadata: BriefMetadata
+}
 
 // Page metadata
 useHead({
