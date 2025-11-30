@@ -1,15 +1,23 @@
 {
   "app": {
     "title": "Daily News Brief",
-    "loading": "Loading news brief..."
+    "subtitle": "AI-curated news from 15 international sources",
+    "loading": "Loading news brief...",
+    "noArticles": "No news brief available yet. Check back soon!",
+    "articlesCount": "{count} article | {count} articles"
   },
   "sections": {
     "israelRelevant": "Israel-Relevant News",
     "otherCoverage": "Other Coverage"
   },
   "article": {
+    "israelRelevant": "Israel-Relevant",
     "sources": "{count} source | {count} sources",
-    "openOriginal": "Read Full Article"
+    "openOriginal": "Read Full Article",
+    "readOriginal": "Read original article",
+    "readMore": "Read more",
+    "fullArticle": "Full Article",
+    "close": "Close"
   },
   "status": {
     "live": "Live",
@@ -18,17 +26,21 @@
   "errors": {
     "loadFailed": "Failed to load news brief. Please try again later.",
     "tryAgain": "Try Again",
-    "noArticles": "No news brief available yet. Check back soon!"
+    "retry": "Retry",
+    "unableToLoad": "Unable to load news brief."
   },
   "language": {
-    "label": "Language"
+    "label": "Language",
+    "switchTo": "Switch to {lang}"
   },
   "meta": {
+    "title": "Daily News Brief - AI-Curated News",
+    "description": "Stay informed with AI-curated news from 15 international sources",
     "generatedAt": "Updated {time}",
     "totalArticles": "{count} article | {count} articles"
   },
   "footer": {
-    "sources": "AI-curated from 15 international sources",
-    "updateFrequency": "Data updates automatically 6 times daily"
+    "sources": "Generated from 15 international news sources using AI-powered curation",
+    "updates": "Data updates automatically 6 times daily"
   }
 }

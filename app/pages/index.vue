@@ -69,30 +69,35 @@ watch(selectedLanguage, (newLang) => {
       <!-- Header -->
       <header class="mb-8 md:mb-12">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-          <!-- Title -->
-          <div class="text-center md:text-start">
-            <h1 class="text-3xl md:text-4xl font-bold text-ink-primary mb-2">
-              {{ t('app.title') }}
+          <!-- Title with gradient animation -->
+          <div class="text-center md:text-start fade-in">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">
+              <span class="gradient-text">{{ t('app.title') }}</span>
             </h1>
-            <p class="text-sm md:text-base text-ink-secondary">
-              {{ t('app.subtitle') }}
+            <p class="text-sm md:text-base text-ink-secondary flex items-center gap-2 justify-center md:justify-start">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>{{ t('app.subtitle') }}</span>
             </p>
           </div>
 
-          <!-- Language Toggle -->
-          <LanguageToggle
-            :current-language="selectedLanguage"
-            @change="handleLanguageChange"
-          />
+          <!-- Language Toggle with delay -->
+          <div class="fade-in-delay-1">
+            <LanguageToggle
+              :current-language="selectedLanguage"
+              @change="handleLanguageChange"
+            />
+          </div>
         </div>
 
-        <!-- Real-time Status Indicator -->
+        <!-- Real-time Status Indicator with glow -->
         <div
           v-if="isListening"
-          class="glass-card rounded-full px-4 py-2 flex items-center justify-center gap-2 text-xs md:text-sm text-accent-primary max-w-fit mx-auto md:mx-0"
+          class="glass-card rounded-full px-4 py-2.5 flex items-center justify-center gap-2 text-xs md:text-sm text-accent-primary max-w-fit mx-auto md:mx-0 badge-glow fade-in-delay-2"
         >
-          <span class="inline-block w-2 h-2 bg-accent-primary rounded-full animate-pulse"></span>
-          <span>{{ t('status.liveUpdates') }}</span>
+          <span class="inline-block w-2 h-2 bg-accent-primary rounded-full pulse-slow"></span>
+          <span class="font-medium">{{ t('status.liveUpdates') }}</span>
         </div>
       </header>
 
