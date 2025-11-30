@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "Daily News Brief",
+    "loading": "Loading news brief..."
+  },
+  "sections": {
+    "israelRelevant": "Israel-Relevant News",
+    "otherCoverage": "Other Coverage"
+  },
+  "article": {
+    "sources": "{count} source | {count} sources",
+    "openOriginal": "Read Full Article"
+  },
+  "status": {
+    "live": "Live",
+    "liveUpdates": "Live updates active"
+  },
+  "errors": {
+    "loadFailed": "Failed to load news brief. Please try again later.",
+    "tryAgain": "Try Again",
+    "noArticles": "No news brief available yet. Check back soon!"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "meta": {
+    "generatedAt": "Updated {time}",
+    "totalArticles": "{count} article | {count} articles"
+  },
+  "footer": {
+    "sources": "AI-curated from 15 international sources",
+    "updateFrequency": "Data updates automatically 6 times daily"
+  }
+}

@@ -3,9 +3,20 @@ import { createClient } from '@supabase/supabase-js'
 type Language = 'he' | 'ar' | 'en'
 
 export const useRealtimeBrief = (language: Ref<Language>, onUpdate: () => void) => {
-  const config = useRuntimeConfig()
   const isListening = ref(false)
   const lastUpdateTime = ref<string | null>(null)
+
+  // Only run on client - WebSocket/realtime is client-only
+  if (import.meta.server) {
+    return {
+      isListening,
+      lastUpdateTime,
+      startListening: () => {},
+      stopListening: () => {}
+    }
+  }
+
+  const config = useRuntimeConfig()
 
   // Check if Supabase credentials are available
   if (!config.public.supabaseUrl || !config.public.supabaseAnonKey) {
@@ -18,43 +29,42 @@ export const useRealtimeBrief = (language: Ref<Language>, onUpdate: () => void) 
     }
   }
 
-  // Create Supabase client for real-time subscriptions
-  const supabase = createClient(
-    config.public.supabaseUrl,
-    config.public.supabaseAnonKey
-  )
+  let supabase: ReturnType<typeof createClient> | null = null
+  let channel: ReturnType<ReturnType<typeof createClient>['channel']> | null = null
 
-  // Set up real-time subscription
-  const channel = supabase
-    .channel('curated_articles_changes')
-    .on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'curated_articles',
-        filter: `target_language=eq.${language.value}`
-      },
-      (payload) => {
-        console.log('New curated article detected:', payload)
-        lastUpdateTime.value = new Date().toISOString()
+  const setupChannel = () => {
+    if (!supabase) {
+      supabase = createClient(config.public.supabaseUrl, config.public.supabaseAnonKey)
+    }
 
-        // Show notification
-        if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification('New News Brief Available', {
-            body: 'A fresh news brief has been published. Refreshing...',
-            icon: '/favicon.ico'
-          })
+    channel = supabase
+      .channel('curated_articles_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'curated_articles',
+          filter: `target_language=eq.${language.value}`
+        },
+        (payload) => {
+          console.log('New curated article detected:', payload)
+          lastUpdateTime.value = new Date().toISOString()
+
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('New News Brief Available', {
+              body: 'A fresh news brief has been published. Refreshing...',
+              icon: '/favicon.ico'
+            })
+          }
+
+          onUpdate()
         }
+      )
+  }
 
-        // Trigger update callback
-        onUpdate()
-      }
-    )
-
-  // Start listening
   const startListening = () => {
-    if (!isListening.value) {
+    if (!isListening.value && channel) {
       channel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           isListening.value = true
@@ -64,38 +74,34 @@ export const useRealtimeBrief = (language: Ref<Language>, onUpdate: () => void) 
     }
   }
 
-  // Stop listening
   const stopListening = () => {
-    if (isListening.value) {
+    if (channel) {
       channel.unsubscribe()
       isListening.value = false
       console.log('Unsubscribed from real-time updates')
     }
   }
 
-  // Request notification permission
   const requestNotificationPermission = async () => {
     if ('Notification' in window && Notification.permission === 'default') {
       await Notification.requestPermission()
     }
   }
 
-  // Auto-start on mount
   onMounted(() => {
+    setupChannel()
     startListening()
     requestNotificationPermission()
   })
 
-  // Clean up on unmount
   onUnmounted(() => {
     stopListening()
   })
 
-  // Watch for language changes
   watch(language, (newLang, oldLang) => {
     if (newLang !== oldLang) {
-      // Resubscribe with new language filter
       stopListening()
+      setupChannel()
       setTimeout(() => startListening(), 100)
     }
   })

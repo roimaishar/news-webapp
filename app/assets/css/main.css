@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-ink-primary;
+    background: radial-gradient(
+        circle at 20% 20%,
+        theme('colors.canvas.from'),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        theme('colors.canvas.to'),
+        transparent 50%
+      ),
+      theme('colors.canvas.DEFAULT');
+  }
+}
+
+@layer components {
+  /* Glass card utility */
+  .glass-card {
+    @apply bg-glass backdrop-blur-glass border border-glass-border shadow-glass;
+    @apply transition-all duration-200;
+  }
+
+  .glass-card:hover {
+    @apply bg-glass-hover shadow-glass-hover;
+  }
+
+  /* Smooth fade-in for new content */
+  .fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "סיכום חדשות יומי",
+    "loading": "טוען סיכום חדשות..."
+  },
+  "sections": {
+    "israelRelevant": "חדשות רלוונטיות לישראל",
+    "otherCoverage": "סיקור נוסף"
+  },
+  "article": {
+    "sources": "מקור אחד | {count} מקורות",
+    "openOriginal": "קרא כתבה מלאה"
+  },
+  "status": {
+    "live": "חי",
+    "liveUpdates": "עדכונים חיים פעילים"
+  },
+  "errors": {
+    "loadFailed": "טעינת סיכום החדשות נכשלה. נא לנסות שוב מאוחר יותר.",
+    "tryAgain": "נסה שוב",
+    "noArticles": "סיכום חדשות אינו זמין עדיין. נא לבדוק מאוחר יותר!"
+  },
+  "language": {
+    "label": "שפה"
+  },
+  "meta": {
+    "generatedAt": "עודכן ב-{time}",
+    "totalArticles": "כתבה אחת | {count} כתבות"
+  },
+  "footer": {
+    "sources": "נאסף מ-15 מקורות חדשות בינלאומיים על ידי AI",
+    "updateFrequency": "הנתונים מתעדכנים אוטומטית 6 פעמים ביום"
+  }
+}

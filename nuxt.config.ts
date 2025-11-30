@@ -3,10 +3,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  css: ['~/assets/css/main.css'],
+
   modules: [
     '@nuxtjs/tailwindcss',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n'
   ],
+
+  i18n: {
+    locales: [
+      { code: 'he', iso: 'he-IL', file: 'he.json', dir: 'rtl' },
+      { code: 'ar', iso: 'ar', file: 'ar.json', dir: 'rtl' },
+      { code: 'en', iso: 'en-US', file: 'en.json', dir: 'ltr' }
+    ],
+    defaultLocale: 'he',
+    strategy: 'no_prefix',
+    langDir: 'locales',
+    detectBrowserLanguage: false
+  },
 
   app: {
     head: {
