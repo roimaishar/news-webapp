@@ -39,7 +39,7 @@ const handleClick = () => {
 
 <template>
   <article
-    class="glass-card article-hover rounded-2xl cursor-pointer group overflow-hidden"
+    class="glass-card article-hover magnetic-hover rounded-2xl cursor-pointer group overflow-hidden"
     :class="[
       variant === 'feature'
         ? 'p-6 md:p-8'
@@ -47,9 +47,9 @@ const handleClick = () => {
     ]"
     @click="handleClick"
   >
-    <!-- Decorative gradient overlay -->
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-      <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/5 via-transparent to-accent-israel/5"></div>
+    <!-- Ambient glow effect with enhanced opacity -->
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-br from-accent-primary/8 via-transparent to-accent-israel/8"></div>
     </div>
 
     <!-- Content wrapper -->

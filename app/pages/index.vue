@@ -3,6 +3,9 @@ import type { BriefResponse, BriefArticle, Language } from '~/types/brief'
 
 const { t, locale } = useI18n()
 
+// Activate magnetic hover effect
+useMagneticEffect()
+
 // Page metadata
 useHead({
   title: computed(() => t('meta.title')),
