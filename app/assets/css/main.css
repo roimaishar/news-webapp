@@ -317,4 +317,123 @@
   .article-hover:active {
     transform: translateY(-2px) scale(0.99);
   }
+
+  /* View Transition Animations (native browser API) */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  ::view-transition-old(article-card) {
+    animation: slideOut 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  ::view-transition-new(article-drawer) {
+    animation: slideIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @keyframes slideOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Scroll-Linked Animations with Intersection Observer */
+  .fade-in-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .fade-in-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger animation for children */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stagger-children.is-visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .stagger-children.is-visible > *:nth-child(2) { transition-delay: 0.1s; }
+  .stagger-children.is-visible > *:nth-child(3) { transition-delay: 0.15s; }
+  .stagger-children.is-visible > *:nth-child(4) { transition-delay: 0.2s; }
+  .stagger-children.is-visible > *:nth-child(5) { transition-delay: 0.25s; }
+  .stagger-children.is-visible > *:nth-child(6) { transition-delay: 0.3s; }
+
+  .stagger-children.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* CSS Containment for performance optimization */
+  .article-card-container {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 250px;
+  }
+
+  /* Optimize will-change usage - only on hover */
+  .glass-card {
+    will-change: auto;
+  }
+
+  .glass-card:hover {
+    will-change: transform, filter;
+  }
+}
+
+/* Accessibility: Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .magnetic-hover,
+  .article-hover,
+  .fade-in,
+  .fade-in-up,
+  .fade-in-scroll,
+  .stagger-children > * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Accessibility: High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .glass-card {
+    background: white;
+    border: 2px solid currentColor;
+  }
+
+  .gradient-text {
+    -webkit-text-fill-color: currentColor;
+  }
 }

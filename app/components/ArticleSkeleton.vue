@@ -14,78 +14,52 @@ withDefaults(defineProps<Props>(), {
   <div
     v-for="i in count"
     :key="i"
-    class="glass-card rounded-2xl animate-pulse"
+    class="glass-card rounded-2xl relative overflow-hidden"
     :class="[
       variant === 'feature'
-        ? 'p-6 md:p-8'
-        : 'p-4 md:p-5'
+        ? 'p-6 md:p-8 h-48'
+        : 'p-4 md:p-5 h-32'
     ]"
   >
-    <!-- Badge Placeholder (sometimes visible) -->
-    <div
-      v-if="Math.random() > 0.5"
-      class="w-32 h-6 rounded-full mb-3"
-      :class="variant === 'feature' ? 'mb-4' : 'mb-3'"
-      style="background: rgba(100, 116, 139, 0.1);"
-    ></div>
+    <!-- Animated shimmer overlay -->
+    <div class="absolute inset-0 shimmer-effect"></div>
 
-    <!-- Title Placeholder -->
-    <div class="space-y-2 mb-3" :class="{ 'mb-4': variant === 'feature' }">
-      <div
-        class="h-5 rounded"
-        :class="[
-          variant === 'feature'
-            ? 'h-6 md:h-7'
-            : 'h-4 md:h-5'
-        ]"
-        style="background: rgba(100, 116, 139, 0.15); width: 90%;"
-      ></div>
-      <div
-        v-if="variant === 'feature' || Math.random() > 0.3"
-        class="h-5 rounded"
-        :class="[
-          variant === 'feature'
-            ? 'h-6 md:h-7'
-            : 'h-4 md:h-5'
-        ]"
-        style="background: rgba(100, 116, 139, 0.15); width: 75%;"
-      ></div>
-    </div>
-
-    <!-- Metadata Footer Placeholder -->
-    <div class="flex items-center justify-between gap-3">
-      <!-- Source -->
-      <div class="flex items-center gap-2">
-        <div
-          class="w-6 h-6 rounded-full"
-          style="background: rgba(100, 116, 139, 0.1);"
-        ></div>
-        <div
-          class="h-3 rounded"
-          style="background: rgba(100, 116, 139, 0.1); width: 80px;"
-        ></div>
-      </div>
-
-      <!-- Timestamp -->
-      <div
-        class="h-3 rounded"
-        style="background: rgba(100, 116, 139, 0.1); width: 40px;"
-      ></div>
+    <!-- Content placeholders -->
+    <div class="relative z-10 space-y-3">
+      <div class="skeleton-box h-6 w-3/4 rounded" />
+      <div class="skeleton-box h-6 w-5/6 rounded" />
+      <div class="skeleton-box h-4 w-1/2 rounded mt-4" />
     </div>
   </div>
 </template>
 
 <style scoped>
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
-  50% {
-    opacity: 0.6;
+  100% {
+    background-position: 200% 0;
   }
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.skeleton-box {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.08) 0%,
+    rgba(15, 23, 42, 0.04) 50%,
+    rgba(15, 23, 42, 0.08) 100%
+  );
 }
 </style>
