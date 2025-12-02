@@ -1,33 +1,90 @@
+/* Inter Variable Font - must come before @tailwind directives */
+@import url('https://rsms.me/inter/inter.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Fluid Typography & Design Tokens */
+:root {
+  /* Fluid typography scale using clamp for responsive sizing */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.5rem);
+
+  /* Optical spacing for refined typography */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+
+  /* Line heights for vertical rhythm */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Magnetic hover range */
+  --magnetic-range: 20px;
+}
+
 @layer base {
   body {
     @apply antialiased text-ink-primary;
-    background:
+
+    /* Inter Variable Font with OpenType features */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Enhanced mesh gradient background with 4 floating orbs + noise texture */
+    background-image:
+      /* Subtle noise texture for premium feel */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"),
+      /* Floating mesh gradient orbs */
       radial-gradient(
-        circle at 20% 20%,
-        rgba(139, 92, 246, 0.08),
-        transparent 40%
+        circle at 15% 15%,
+        rgba(139, 92, 246, 0.15),
+        transparent 25%
       ),
       radial-gradient(
-        circle at 80% 80%,
-        rgba(59, 130, 246, 0.08),
-        transparent 40%
+        circle at 85% 25%,
+        rgba(59, 130, 246, 0.12),
+        transparent 30%
       ),
       radial-gradient(
-        circle at 50% 50%,
-        rgba(236, 72, 153, 0.05),
-        transparent 60%
+        circle at 70% 80%,
+        rgba(236, 72, 153, 0.1),
+        transparent 35%
       ),
+      radial-gradient(
+        circle at 25% 75%,
+        rgba(16, 185, 129, 0.08),
+        transparent 30%
+      ),
+      /* Base gradient */
       linear-gradient(
         135deg,
-        theme('colors.canvas.from') 0%,
-        theme('colors.canvas.DEFAULT') 50%,
-        theme('colors.canvas.to') 100%
+        #fafbfc 0%,
+        #f5f7fb 25%,
+        #eef2ff 50%,
+        #f0f3fb 75%,
+        #fafbfc 100%
       );
-    background-attachment: fixed;
+    background-attachment: scroll; /* Better mobile performance than fixed */
+    background-size: 100% 100%;
+  }
+
+  /* Refined heading typography with variable font weights */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 650; /* Optical weight for display text */
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
   }
 }
 

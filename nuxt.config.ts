@@ -3,6 +3,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  experimental: {
+    // Enable native View Transitions API for smooth page transitions
+    viewTransition: true,
+  },
+
+  vite: {
+    css: {
+      // Enable CSS sourcemaps for easier debugging
+      devSourcemap: true,
+    },
+  },
+
   css: ['~/assets/css/main.css'],
 
   modules: [
