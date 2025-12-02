@@ -41,6 +41,9 @@ export interface BriefArticle {
   url: string
   rankPosition: number
   articleCount: number
+  publishedAt: string | null
+  isPaywalled?: boolean
+  archiveUrl?: string
 }
 
 export interface BriefMetadata {
@@ -77,4 +80,47 @@ export const SOURCE_INITIALS: Record<string, string> = {
   'Al Jazeera English': 'AJ-EN',
   'New York Times': 'NYT',
   'Times of Israel': 'TOI'
+}
+
+// Paywalled sources that require archive.today (normalized lowercase for matching)
+export const PAYWALLED_SOURCES: Set<string> = new Set([
+  // English sources
+  'new york times',
+  'the new york times',
+  'nyt',
+  'wall street journal',
+  'wsj',
+  'the wall street journal',
+  'financial times',
+  'ft',
+  'the economist',
+  'bloomberg',
+  'washington post',
+  'the washington post',
+
+  // Hebrew sources
+  'the marker',
+  'themarker',
+  'calcalist',
+  'globes',
+])
+
+// Normalize source name for case-insensitive matching
+function normalizeSource(source: string): string {
+  return source.trim().toLowerCase()
+}
+
+export function isPaywalledSource(source: string): boolean {
+  return PAYWALLED_SOURCES.has(normalizeSource(source))
+}
+
+export function generateArchiveLink(originalUrl: string): string {
+  const encodedUrl = encodeURIComponent(originalUrl)
+  return `https://archive.today/?run=1&url=${encodedUrl}`
+}
+
+export function getEffectiveUrl(article: BriefArticle): string {
+  return article.isPaywalled && article.archiveUrl
+    ? article.archiveUrl
+    : article.url
 }

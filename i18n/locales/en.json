@@ -17,7 +17,8 @@
     "readOriginal": "Read original article",
     "readMore": "Read more",
     "fullArticle": "Full Article",
-    "close": "Close"
+    "close": "Close",
+    "archived": "Archived"
   },
   "status": {
     "live": "Live",

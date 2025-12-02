@@ -1,5 +1,5 @@
 import type { BriefResponse, BriefArticle, BriefMetadata, Language, Article, CuratedArticle } from '../../../types/brief'
-import { SOURCE_INITIALS } from '../../../types/brief'
+import { SOURCE_INITIALS, isPaywalledSource, generateArchiveLink } from '../../../types/brief'
 
 export default defineEventHandler(async (event): Promise<BriefResponse> => {
   const query = getQuery(event)
@@ -87,15 +87,24 @@ export default defineEventHandler(async (event): Promise<BriefResponse> => {
 
       const source = originalArticle?.source || 'Unknown'
       const sourceInitials = SOURCE_INITIALS[source] || source.substring(0, 3).toUpperCase()
+      const originalUrl = originalArticle?.url || '#'
+
+      // Check if source is paywalled (only if we have a valid URL)
+      const hasValidUrl = !!originalArticle?.url && originalArticle.url !== '#'
+      const isPaywalled = hasValidUrl && isPaywalledSource(source)
+      const archiveUrl = isPaywalled ? generateArchiveLink(originalArticle!.url) : undefined
 
       return {
         id: curated.id,
         title: curated.unified_title,
         source,
         sourceInitials,
-        url: originalArticle?.url || '#',
+        url: originalUrl,
         rankPosition: curated.rank_position,
-        articleCount: curated.article_count
+        articleCount: curated.article_count,
+        publishedAt: originalArticle?.published_date || null,
+        isPaywalled,
+        archiveUrl
       }
     })
 

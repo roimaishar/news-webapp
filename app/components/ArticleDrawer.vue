@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BriefArticle } from '~/types/brief'
+import { getEffectiveUrl } from '~/types/brief'
 
 interface Props {
   article: BriefArticle | null
@@ -15,8 +16,9 @@ const emit = defineEmits<{
 const { locale } = useI18n()
 
 const formattedDate = computed(() => {
-  if (!props.article) return ''
+  if (!props.article || !props.article.publishedAt) return ''
   const date = new Date(props.article.publishedAt)
+  if (isNaN(date.getTime())) return ''
   return date.toLocaleDateString(locale.value, {
     year: 'numeric',
     month: 'long',
@@ -155,7 +157,8 @@ onUnmounted(() => {
               <!-- Original Link -->
               <div class="pt-4 border-t border-glass-border">
                 <a
-                  :href="article.url"
+                  v-if="article"
+                  :href="getEffectiveUrl(article)"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-accent-primary hover:text-accent-primary/80 font-medium transition-colors"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BriefArticle } from '~/types/brief'
+import { getEffectiveUrl } from '~/types/brief'
 
 interface Props {
   article: BriefArticle
@@ -17,7 +18,15 @@ const emit = defineEmits<{
 const { locale } = useI18n()
 
 const formattedTime = computed(() => {
+  if (!props.article.publishedAt) {
+    return null
+  }
+
   const date = new Date(props.article.publishedAt)
+  if (isNaN(date.getTime())) {
+    return null
+  }
+
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
   const diffMins = Math.floor(diffMs / 60000)
@@ -33,6 +42,7 @@ const formattedTime = computed(() => {
 })
 
 const handleClick = () => {
+  window.open(getEffectiveUrl(props.article), '_blank', 'noopener,noreferrer')
   emit('click', props.article)
 }
 </script>
@@ -90,14 +100,24 @@ const handleClick = () => {
             {{ article.sourceInitials }}
           </span>
           <span class="text-xs md:text-sm text-ink-secondary font-medium">{{ article.sourceName }}</span>
+
+          <!-- Archive badge for paywalled sources -->
+          <span v-if="article.isPaywalled"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-purple-100 text-purple-700 border border-purple-200">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+            </svg>
+            <span>{{ $t('article.archived') }}</span>
+          </span>
         </div>
 
         <!-- Timestamp with icon -->
-        <div class="flex items-center gap-1.5 text-ink-muted">
+        <div v-if="formattedTime" class="flex items-center gap-1.5 text-ink-muted">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <time :datetime="article.publishedAt" class="text-xs md:text-sm">
+          <time :datetime="article.publishedAt || undefined" class="text-xs md:text-sm">
             {{ formattedTime }}
           </time>
         </div>
