@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { BriefArticle } from '~/types/brief'
-import { getEffectiveUrl } from '~/types/brief'
+import type { BriefArticle } from '../../types/brief'
+import { getEffectiveUrl } from '../../types/brief'
 
 interface Props {
   article: BriefArticle
