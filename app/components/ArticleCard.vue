@@ -45,6 +45,25 @@ const handleClick = () => {
   window.open(getEffectiveUrl(props.article), '_blank', 'noopener,noreferrer')
   emit('click', props.article)
 }
+
+// Favicon state tracking
+const faviconError = ref<Record<number, boolean>>({})
+
+// Generate Google favicon URL from article URL
+const getFaviconUrl = (url: string): string => {
+  try {
+    const domain = new URL(url).hostname
+    return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
+  } catch (e) {
+    console.error('Invalid URL for favicon:', url)
+    return ''
+  }
+}
+
+// Fallback to initials when favicon fails
+const handleFaviconError = () => {
+  faviconError.value[props.article.id] = true
+}
 </script>
 
 <template>
@@ -93,23 +112,25 @@ const handleClick = () => {
       <div class="flex items-center justify-between gap-3 text-sm">
         <!-- Source with gradient background -->
         <div class="flex items-center gap-2">
-          <span
-            class="inline-flex items-center justify-center w-7 h-7 rounded-lg font-bold text-xs shadow-sm"
-            style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.08)); color: #2563eb; border: 1px solid rgba(37, 99, 235, 0.15);"
-          >
-            {{ article.sourceInitials }}
-          </span>
-          <span class="text-xs md:text-sm text-ink-secondary font-medium">{{ article.sourceName }}</span>
+          <div class="relative inline-flex items-center justify-center w-7 h-7 rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-white">
+            <!-- Favicon image -->
+            <img
+              v-if="!faviconError[article.id]"
+              :src="getFaviconUrl(article.url)"
+              :alt="`${article.source} icon`"
+              class="w-4 h-4 object-contain"
+              @error="handleFaviconError"
+            />
 
-          <!-- Archive badge for paywalled sources -->
-          <span v-if="article.isPaywalled"
-                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-purple-100 text-purple-700 border border-purple-200">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-            </svg>
-            <span>{{ $t('article.archived') }}</span>
-          </span>
+            <!-- Fallback to initials -->
+            <span
+              v-if="faviconError[article.id]"
+              class="font-bold text-xs text-accent-primary"
+            >
+              {{ article.sourceInitials }}
+            </span>
+          </div>
+          <span class="text-xs md:text-sm text-ink-secondary font-medium">{{ article.source }}</span>
         </div>
 
         <!-- Timestamp with icon -->

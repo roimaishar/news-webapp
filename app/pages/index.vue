@@ -16,8 +16,6 @@ useHead({
 
 // Reactive state
 const selectedLanguage = ref<Language>('he')
-const selectedArticle = ref<BriefArticle | null>(null)
-const isDrawerOpen = ref(false)
 
 // Fetch brief data
 const { data: brief, error: fetchError, status, refresh } = await useFetch<BriefResponse>('/api/brief/latest', {
@@ -38,18 +36,10 @@ const handleLanguageChange = (language: Language) => {
 // Detect RTL languages
 const isRtl = computed(() => ['he', 'ar'].includes(selectedLanguage.value))
 
-// Handle article click
+// Handle article click (for analytics tracking)
 const handleArticleClick = (article: BriefArticle) => {
-  selectedArticle.value = article
-  isDrawerOpen.value = true
-}
-
-// Handle drawer close
-const handleDrawerClose = () => {
-  isDrawerOpen.value = false
-  setTimeout(() => {
-    selectedArticle.value = null
-  }, 300)
+  // Card's click handler already opens URL in new tab
+  console.log('Article clicked:', article.id, article.title)
 }
 
 // Real-time updates
@@ -236,11 +226,5 @@ watch(selectedLanguage, (newLang) => {
       </div>
     </div>
 
-    <!-- Article Drawer -->
-    <ArticleDrawer
-      :article="selectedArticle"
-      :is-open="isDrawerOpen"
-      @close="handleDrawerClose"
-    />
   </div>
 </template>
