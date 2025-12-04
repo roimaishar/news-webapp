@@ -71,8 +71,8 @@ const handleFaviconError = () => {
     class="glass-card article-hover magnetic-hover rounded-2xl cursor-pointer group overflow-hidden"
     :class="[
       variant === 'feature'
-        ? 'p-6 md:p-8'
-        : 'p-4 md:p-5'
+        ? 'p-5 md:p-6'
+        : 'p-3 md:p-4'
     ]"
     @click="handleClick"
   >
@@ -86,8 +86,8 @@ const handleFaviconError = () => {
       <!-- Israel Relevance Badge with icon -->
       <div
         v-if="article.israelRelevant"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium mb-3 badge-glow"
-        :class="variant === 'feature' ? 'mb-4' : 'mb-3'"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium mb-2 badge-glow"
+        :class="variant === 'feature' ? 'mb-3' : 'mb-2'"
         style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.12), rgba(220, 38, 38, 0.08)); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.2);"
       >
         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -96,12 +96,12 @@ const handleFaviconError = () => {
         <span>{{ $t('article.israelRelevant') }}</span>
       </div>
 
-      <!-- Article Title with underline effect -->
+      <!-- Article Title -->
       <h3
-        class="font-semibold leading-snug mb-3 text-ink-primary group-hover:text-accent-primary transition-colors duration-200"
+        class="font-normal leading-snug mb-2 text-ink-primary group-hover:text-accent-primary transition-colors duration-200"
         :class="[
           variant === 'feature'
-            ? 'text-xl md:text-2xl mb-4'
+            ? 'text-xl md:text-2xl mb-3'
             : 'text-base md:text-lg'
         ]"
       >
@@ -145,7 +145,7 @@ const handleFaviconError = () => {
       </div>
 
       <!-- Read more indicator -->
-      <div class="mt-3 flex items-center gap-1.5 text-accent-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div class="mt-2 flex items-center gap-1.5 text-accent-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <span>{{ $t('article.readMore') }}</span>
         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
